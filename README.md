@@ -88,3 +88,35 @@
 
 6. 
         kubectl get hpa guestbook
+
+#### Perform Rolling Updates and Rollbacks on the Guestbook application
+1. Please update the title and header in index.html to any other suitable title and header like <Your name> Guestbook - v2 & Guestbook - v2.
+2. Update the values of the CPU in the deployment.yml to cpu: 5m and cpu: 2m 
+3. Apply the changes to the deployment.yml file.
+4. Open a new terminal and run the port-forward command again to start the app.
+5. Launch your application on port 3000. Click on the Skills Network button on the right, it will open the “Skills Network Toolbox”. Then click the Other then Launch Application. From there you should be able to enter the port and launch.
+6. Run command to see the history of deployment rollouts.
+7. Run command to see the details of Revision of the deployment rollout.
+8. Run command to get the replica sets and observe the deployment which is being used now.
+9. Run command to undo the deploymnent and set it to Revision 1.
+10. Run command to get the replica sets after the Rollout has been undone. The deployment being used would have changed.
+
+#### Solution
+2. 
+        docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v2 && docker push us.icr.io/$MY_NAMESPACE/guestbook:v2
+
+change  yml file `resources limits cpu:5m and request:2m`
+
+3. 
+    kubectl apply -f deployment.yml
+
+6. 
+        kubectl rollout history deployment/guestbook
+7. 
+        kubectl rollout history deployments guestbook --revision=2
+8. 
+        kubectl get rs
+9. 
+        kubectl rollout undo deployment/guestbook --to-revision=1
+10. 
+        kubectl get rs
