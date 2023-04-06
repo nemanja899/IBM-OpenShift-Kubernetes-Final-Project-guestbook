@@ -1,10 +1,10 @@
 # 1. Peer Graded| Final Project- Build and Deploy a Guestbook App
 
-## 1.1. This is from IBM course `Introduction to Containers w/Docker, Kubernetes & OpenShift`
+##  This is from IBM course `Introduction to Containers w/Docker, Kubernetes & OpenShift`
 
-### 1.1.1. Asignments for v1/guestbook:
+###  Asignments for v1/guestbook:
 
-#### 1.1.1.1. Build the guestbook app
+####  Build the guestbook app
 1. Complete the Dockerfile with the necessary Docker commands to build and push your image. The path to this file is `guestbook/v1/guestbook/Dockerfile`
 
 2. Export your namespace as an environment variable so that it can be used in subsequent commands.
@@ -18,7 +18,7 @@
 10. Now you should be able to see your running application. Please copy the app URL which will be given.
 11. Try out the guestbook by putting in a few entries. You should see them appear above the input box after you hit Submit.
 
-#### 1.1.1.2. Solution 
+####  Solution 
 1. 
         FROM golang:1.15 as builder
         RUN go get github.com/codegangsta/negroni
@@ -64,13 +64,27 @@
 9. 
 ![image info](./images/v1-start-app.jpg)
 
-10. em
+10. 
     ![image info](./images/v1-guestbook-app.jpg)
-#### 1.1.1.3. Autoscale the Guestbook application using Horizontal Pod Autoscaler
-- Autoscale the Guestbook deployment using `kubectl autoscale deployment`
-- Check the current status of the newly-made HorizontalPodAutoscaler
-- Open another new terminal and enter command to generate load on the app to observe the autoscaling (Please ensure your port-forward command is running. In case you have stopped your application, please run the port-forward command to re-run the application at port 3000.)
-- Run command to observe the replicas increase in accordance with the autoscaling.
-- Run the above command again after 5-10 minutes and you will see an increase in the number of replicas which shows that your application has been autoscaled.
-- Run command to observe the details of the horizontal pod autoscaler.
-- 
+####  Autoscale the Guestbook application using Horizontal Pod Autoscaler
+1. Autoscale the Guestbook deployment using `kubectl autoscale deployment`
+2. Check the current status of the newly-made HorizontalPodAutoscaler
+3. Open another new terminal and enter command to generate load on the app to observe the autoscaling (Please ensure your port-forward command is running. In case you have stopped your application, please run the port-forward command to re-run the application at port 3000.)
+4. Run command to observe the replicas increase in accordance with the autoscaling.
+5. Run the above command again after 5-10 minutes and you will see an increase in the number of replicas which shows that your application has been autoscaled.
+6. Run command to observe the details of the horizontal pod autoscaler.
+  
+#### Solution
+1. 
+        kubectl autoscale deploy guestbook --min=2 --max=10 --cpu-percent=10
+2. 
+        kubectl get hpa guestbook
+
+3. 
+        kubectl run -i --tty load-generator --rm --image=busybox:1.36.0 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- [<your app URL>](https://zakizaja-3000.theiaopenshift-0-labs-prod-theiaopenshift-4-tor01.proxy.cognitiveclass.ai/); done"
+
+4. 
+        kubectl get hpa guestbook --watch
+
+6. 
+        kubectl get hpa guestbook
