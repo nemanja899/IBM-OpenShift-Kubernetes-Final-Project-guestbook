@@ -36,6 +36,12 @@
         WORKDIR /app
         CMD ["./guestbook"]
         EXPOSE 3000
+    -   export MY_NAMESPACE=sn-labs-$USERNAME
+    -   docker build . -t us.icr.io/$MY_NAMESPACE/guestbook:v1
+    -   ibmcloud cr login
+        ibmcloud cr region-set us-south
+        docker push us.icr.io/$MY_NAMESPACE/guestbook:v1
+    -   ibmcloud cr images
 #### Autoscale the Guestbook application using Horizontal Pod Autoscaler
 - Autoscale the Guestbook deployment using `kubectl autoscale deployment`
 - Check the current status of the newly-made HorizontalPodAutoscaler
