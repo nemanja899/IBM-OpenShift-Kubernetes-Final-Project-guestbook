@@ -19,23 +19,23 @@
 - Try out the guestbook by putting in a few entries. You should see them appear above the input box after you hit Submit.
 
 #### Solution 
-  -   FROM golang:1.15 as builder
-      RUN go get github.com/codegangsta/negroni
-      RUN go get github.com/gorilla/mux github.com/xyproto/simpleredis
-      COPY main.go .
-      RUN go build main.go
+    -   FROM golang:1.15 as builder
+        RUN go get github.com/codegangsta/negroni
+        RUN go get github.com/gorilla/mux github.com/xyproto/simpleredis
+        COPY main.go .
+        RUN go build main.go
 
-      FROM ubuntu:18.04
+        FROM ubuntu:18.04
 
-      COPY --from=builder /go//main /app/guestbook
-      COPY public/index.html /app/public/index.html
-      COPY public/script.js /app/public/script.js
-      COPY public/style.css /app/public/style.css
-      COPY public/jquery.min.js /app/public/jquery.min.js
+        COPY --from=builder /go//main /app/guestbook
+        COPY public/index.html /app/public/index.html
+        COPY public/script.js /app/public/script.js
+        COPY public/style.css /app/public/style.css
+        COPY public/jquery.min.js /app/public/jquery.min.js
 
-      WORKDIR /app
-      CMD ["./guestbook"]
-      EXPOSE 3000
+        WORKDIR /app
+        CMD ["./guestbook"]
+        EXPOSE 3000
 #### Autoscale the Guestbook application using Horizontal Pod Autoscaler
 - Autoscale the Guestbook deployment using `kubectl autoscale deployment`
 - Check the current status of the newly-made HorizontalPodAutoscaler
